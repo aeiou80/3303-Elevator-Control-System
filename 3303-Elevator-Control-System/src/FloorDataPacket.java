@@ -22,6 +22,25 @@ public class FloorDataPacket {
 			
 		}
 		
+		public String getTime() {
+			return time;
+		}
+
+
+		public String getFloor() {
+			return floor;
+		}
+
+
+		public String getFloorButton() {
+			return floorButton;
+		}
+
+
+		public String getCarButton() {
+			return carButton;
+		}
+
 		public String toString() {
 			String value = "{" + this.time + "," + this.floor + "," + this.floorButton + "," + this.carButton + "}";
 			return value;
