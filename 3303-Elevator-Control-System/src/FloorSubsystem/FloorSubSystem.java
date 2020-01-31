@@ -7,13 +7,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 public class FloorSubSystem implements Runnable {
 	
 	private FloorDataPacket newPacket;
 	private List<ArrayList<String>> lst;
+	private FloorQueue fQ;
 
 	public FloorSubSystem() {
+		newPacket = new FloorDataPacket();
 		lst = new ArrayList<>();
+		fQ = new FloorQueue();
 	}
 
 	public void sendPacket(FloorDataPacket packet) {
@@ -51,15 +55,21 @@ public class FloorSubSystem implements Runnable {
 		
 		System.out.println(lst.get(1).get(2));
 		//newPacket = new FloorDataPacket();
-	//	newPacket.setUp(lst.get(0));
+		//newPacket.setUp(lst.get(0));
 	}
 	
 	public void setFloorQueue() {
-		newPacket = new FloorDataPacket();
+		
 		for(int i = 0; i < lst.size(); i++) {
 			newPacket.setUp(lst.get(i));
-			
+			fQ.addTime(newPacket.getTime());
+			fQ.addBaseFloor(newPacket.getFloor());
+			fQ.addDirecQueue(newPacket.getFloorButton());
+			fQ.addDestFloor(newPacket.getCarButton());
 		}
+		
+		
+		
 		
 	}
 	
@@ -71,6 +81,7 @@ public class FloorSubSystem implements Runnable {
 	@Override
 	public void run() {
 		readFile("inputfile.csv");
+		setFloorQueue();
 		while(true) {
 			CheckButton();
 		}

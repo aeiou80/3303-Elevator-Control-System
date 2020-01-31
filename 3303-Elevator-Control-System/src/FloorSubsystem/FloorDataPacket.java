@@ -1,8 +1,8 @@
 package FloorSubsystem;
 
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import Constants.Direction;
 
 public class FloorDataPacket {
 
@@ -25,9 +25,8 @@ public class FloorDataPacket {
 		this.carButton = data.get(3);
 	}
 
-	public Timestamp getTime() {
-		Timestamp ts = Timestamp.valueOf(time);
-		return ts;
+	public String getTime() {
+		return time;
 	}
 
 	public int getFloor() {
@@ -35,8 +34,14 @@ public class FloorDataPacket {
 		return temp;
 	}
 
-	public String getFloorButton() {
-		return floorButton;
+	public Direction getFloorButton() {
+		if(floorButton.equals("Up")){
+			return Direction.UP;
+		}
+		else if(floorButton == "Down") {
+			return Direction.DOWN;
+		}
+		return Direction.IDLE;
 	}
 
 	public int getCarButton() {
@@ -51,7 +56,4 @@ public class FloorDataPacket {
 		return value;
 	}
 	
-	public void setUp() {
-		
-	}
 }
