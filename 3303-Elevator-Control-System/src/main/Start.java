@@ -1,9 +1,12 @@
 package main;
 
+import FloorSubsystem.FloorSubSystem;
+
 public class Start {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Thread floor = new Thread(new FloorSubSystem());
+		floor.start();
 
 	}
 

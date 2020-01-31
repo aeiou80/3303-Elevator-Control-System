@@ -1,5 +1,7 @@
-package system;
+package FloorSubsystem;
 
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class FloorDataPacket {
@@ -9,7 +11,8 @@ public class FloorDataPacket {
 	private String floorButton;
 	private String carButton;
 
-	public FloorDataPacket(ArrayList<String> data) {
+	
+	public void setUp(ArrayList<String> data) {
 		if (data.size() != 4) {
 			int difference = 4 - data.size();
 			for (int i = 0; i < difference; i++) {
@@ -20,27 +23,35 @@ public class FloorDataPacket {
 		this.floor = data.get(1);
 		this.floorButton = data.get(2);
 		this.carButton = data.get(3);
-
 	}
 
-	public String getTime() {
-		return time;
+	public Timestamp getTime() {
+		Timestamp ts = Timestamp.valueOf(time);
+		return ts;
 	}
 
-	public String getFloor() {
-		return floor;
+	public int getFloor() {
+		int temp = Integer.parseInt(floor);
+		return temp;
 	}
 
 	public String getFloorButton() {
 		return floorButton;
 	}
 
-	public String getCarButton() {
-		return carButton;
+	public int getCarButton() {
+		int temp = Integer.parseInt(carButton);
+		return temp;
 	}
+	
+	
 
 	public String toString() {
 		String value = "{" + this.time + "," + this.floor + "," + this.floorButton + "," + this.carButton + "}";
 		return value;
+	}
+	
+	public void setUp() {
+		
 	}
 }
