@@ -37,9 +37,6 @@ public class FloorSubSystem implements Runnable {
 				ArrayList<String> rowArrayList = new ArrayList<>();
 				Collections.addAll(rowArrayList, rowArray);
 				lst.add(rowArrayList);
-				//newPacket = new FloorDataPacket(lst.get(0));
-				//System.out.println(newPacket);
-				//sendPacket(newPacket);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -52,14 +49,9 @@ public class FloorSubSystem implements Runnable {
                 e.printStackTrace();
             }
         }
-		
-		System.out.println(lst.get(1).get(2));
-		//newPacket = new FloorDataPacket();
-		//newPacket.setUp(lst.get(0));
 	}
 	
 	public void setFloorQueue() {
-		
 		for(int i = 0; i < lst.size(); i++) {
 			newPacket.setUp(lst.get(i));
 			fQ.addTime(newPacket.getTime());
@@ -67,15 +59,23 @@ public class FloorSubSystem implements Runnable {
 			fQ.addDirecQueue(newPacket.getFloorButton());
 			fQ.addDestFloor(newPacket.getCarButton());
 		}
-		
-		
-		
-		
 	}
 	
-	public boolean CheckButton() {
-		return false;
-		
+	public boolean buttonPressed() {
+		if(fQ.getBaseFloorQ().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
+	public void handlePress() {
+		System.out.println("time is " + fQ.getTimeQ().poll());
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Passenger is on " + Thread.currentThread().getName() + " " + fQ.getBaseFloorQ().poll());
 	}
 
 	@Override
@@ -83,15 +83,11 @@ public class FloorSubSystem implements Runnable {
 		readFile("inputfile.csv");
 		setFloorQueue();
 		while(true) {
-			CheckButton();
+			if(buttonPressed()) {
+				handlePress();
+			}
 		}
 		
 
 	}
-
-	//public static void main(String[] args) {
-	//	Thread floor = new Thread(new FloorSubSystem());
-	//	floor.start();
-
-	//}
 }

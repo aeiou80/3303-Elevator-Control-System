@@ -38,7 +38,7 @@ public class FloorDataPacket {
 		if(floorButton.equals("Up")){
 			return Direction.UP;
 		}
-		else if(floorButton == "Down") {
+		else if(floorButton.equals("Down")) {
 			return Direction.DOWN;
 		}
 		return Direction.IDLE;
@@ -48,12 +48,4 @@ public class FloorDataPacket {
 		int temp = Integer.parseInt(carButton);
 		return temp;
 	}
-	
-	
-
-	public String toString() {
-		String value = "{" + this.time + "," + this.floor + "," + this.floorButton + "," + this.carButton + "}";
-		return value;
-	}
-	
 }
