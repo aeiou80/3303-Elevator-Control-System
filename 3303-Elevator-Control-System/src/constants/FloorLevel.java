@@ -1,5 +1,5 @@
 package constants;
-
+// enum class representing the floor levels
 public enum FloorLevel {
 	
 	Floor1 ("Floor 1"),

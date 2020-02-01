@@ -11,6 +11,10 @@ public class FloorData {
 	private String floorButton;
 	private String carButton;
 
+	/**
+	 * method to set up data and convert them to other data structures
+	 * @param data passed in from csv file
+	 */
 	public void setUp(ArrayList<String> data) {
 		if (data.size() != 4) {
 			int difference = 4 - data.size();
@@ -28,6 +32,10 @@ public class FloorData {
 		return time;
 	}
 
+	/**
+	 * 
+	 * @return floor level
+	 */
 	public FloorLevel getFloor() {
 		switch (Integer.parseInt(floor)) {
 		case (1):
@@ -46,6 +54,10 @@ public class FloorData {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @return up or down 
+	 */
 	public FloorButton getFloorButton() {
 		if (floorButton.equals("Up")) {
 			return FloorButton.UP;
@@ -55,6 +67,10 @@ public class FloorData {
 		return FloorButton.IDLE;
 	}
 
+	/**
+	 * 
+	 * @return destination floor button
+	 */
 	public FloorLevel getCarButton() {
 		switch (Integer.parseInt(carButton)) {
 		case (1):

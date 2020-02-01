@@ -1,5 +1,6 @@
 package constants;
 
+// Class representing the wait times
 public final class TimeConst {
 
 	public final int LOAD = 4000;

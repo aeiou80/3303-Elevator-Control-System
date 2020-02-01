@@ -13,16 +13,24 @@ public class FloorSubSystem implements Runnable {
 
 	private Scheduler scheduler;
 	private FloorData info;
-	private List<ArrayList<String>> lst;
+	private List<ArrayList<String>> dataLst;
 	private WaitTime wait;
 
+	/**
+	 * Constructor method for FloorSubSystem
+	 * @param s scheduler
+	 */
 	public FloorSubSystem(Scheduler s) {
 		scheduler = s;
 		info = new FloorData();
-		lst = new ArrayList<>();
+		dataLst = new ArrayList<>();
 		wait = new WaitTime();
 	}
 
+	/**
+	 * method to parse csv file into array list
+	 * @param filename 
+	 */
 	public void readFile(String filename) {
 		FileReader fileReader = null;
 		BufferedReader bufferReader = null;
@@ -35,7 +43,7 @@ public class FloorSubSystem implements Runnable {
 				String[] rowArray = row.split(",");
 				ArrayList<String> rowArrayList = new ArrayList<>();
 				Collections.addAll(rowArrayList, rowArray);
-				lst.add(rowArrayList);
+				dataLst.add(rowArrayList);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -46,7 +54,7 @@ public class FloorSubSystem implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		info.setUp(lst.get(0));
+		info.setUp(dataLst.get(0));
 	}
 
 	@Override
@@ -54,7 +62,7 @@ public class FloorSubSystem implements Runnable {
 		readFile("inputfile.csv");
 
 		System.out.println(info.getFloor() + " requested at time: " + info.getTime() + " to go " + info.getFloorButton()
-				+ " to " + info.getCarButton());
+				+ " to " + info.getCarButton()); // prints data from list of csv inputs
 
 		wait.defaultTime();
 

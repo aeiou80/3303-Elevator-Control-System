@@ -9,13 +9,22 @@ public class Scheduler implements Runnable {
 	private boolean elevatorRecieve;
 	private boolean floorRecieve;
 	private WaitTime wait;
+	private boolean flag = false;
 
+
+	/**
+	 * constructor method for Scheduler
+	 */
 	public Scheduler() {
 		elevatorRecieve = false;
 		floorRecieve = false;
 		wait = new WaitTime();
 	}
 
+	/**
+	 * method to send info to elevator or floor data
+	 * @param info
+	 */
 	public synchronized void sendInfo(FloorData info) {
 		String threadName = Thread.currentThread().getName();
 
@@ -25,7 +34,7 @@ public class Scheduler implements Runnable {
 			elevatorRecieve = true;
 		else {
 			System.out.println("Invalid thread name.");
-			System.exit(0);
+			//System.exit(0);
 		}
 
 		this.info = info;
@@ -36,6 +45,10 @@ public class Scheduler implements Runnable {
 		notifyAll();
 	}
 
+	/**
+	 * 
+	 * @return floor data info
+	 */
 	public synchronized FloorData getInfo() {
 		String threadName = Thread.currentThread().getName();
 
@@ -65,7 +78,7 @@ public class Scheduler implements Runnable {
 
 	@Override
 	public void run() {
-
+		
 	}
 
 }
