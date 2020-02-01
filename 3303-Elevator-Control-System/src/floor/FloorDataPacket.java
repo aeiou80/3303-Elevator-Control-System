@@ -29,23 +29,18 @@ public class FloorDataPacket {
 	}
 
 	public FloorLevel getFloor() {
-		int temp = Integer.parseInt(floor);
-		if(temp == 1) {
+		switch (Integer.parseInt(floor)) {
+		case (1):
 			return FloorLevel.Floor1;
-		}
-		else if (temp == 2) {
+		case (2):
 			return FloorLevel.Floor2;
-		}
-		else if (temp == 3) {
+		case (3):
 			return FloorLevel.Floor3;
-		}
-		else if (temp == 4) {
+		case (4):
 			return FloorLevel.Floor4;
-		}
-		else if (temp == 5) {
+		case (5):
 			return FloorLevel.Floor5;
-		}
-		else if (temp == 6) {
+		case (6):
 			return FloorLevel.Floor6;
 		}
 		return null;
@@ -62,22 +57,17 @@ public class FloorDataPacket {
 
 	public FloorLevel getCarButton() {
 		int temp = Integer.parseInt(carButton);
-		if(temp == 1) {
+		if (temp == 1) {
 			return FloorLevel.Floor1;
-		}
-		else if (temp == 2) {
+		} else if (temp == 2) {
 			return FloorLevel.Floor2;
-		}
-		else if (temp == 3) {
+		} else if (temp == 3) {
 			return FloorLevel.Floor3;
-		}
-		else if (temp == 4) {
+		} else if (temp == 4) {
 			return FloorLevel.Floor4;
-		}
-		else if (temp == 5) {
+		} else if (temp == 5) {
 			return FloorLevel.Floor5;
-		}
-		else if (temp == 6) {
+		} else if (temp == 6) {
 			return FloorLevel.Floor6;
 		}
 		return null;

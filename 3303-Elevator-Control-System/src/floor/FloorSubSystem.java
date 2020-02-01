@@ -20,8 +20,10 @@ public class FloorSubSystem implements Runnable {
 	private FloorButton buttons;
 	private FloorLamp lamp;
 	private boolean light;
+	private Scheduler scheduler;
 
 	public FloorSubSystem(Scheduler s) {
+		scheduler = s;
 		buttons = new FloorButton();
 		lamp = new FloorLamp();
 		newPacket = new FloorDataPacket();
@@ -50,7 +52,7 @@ public class FloorSubSystem implements Runnable {
 		notifyAll();
 	}
 	
-	public void readFile(String filename) {
+	public FloorDataPacket readFile(String filename) {
 		FileReader fileReader = null;
 		BufferedReader bufferReader = null;
 		try {
@@ -73,7 +75,10 @@ public class FloorSubSystem implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		setFloorQueue();
+		FloorDataPacket info = new FloorDataPacket();
+		info.setUp(lst.get(0));
+		return info;
+		//setFloorQueue();
 	}
 
 	public void setFloorQueue() {
@@ -102,12 +107,14 @@ public class FloorSubSystem implements Runnable {
 
 	@Override
 	public void run() {
-		readFile("inputfile.csv");
+		FloorDataPacket info = readFile("inputfile.csv");
+		System.out.print(info.getFloor() + " requested at time: " + info.getTime() + " to go " + info.getFloorButton() + " to " + info.getCarButton());
 		while (true) {
-			if (buttonPressed()) {
-				handlePress();
-				illuminateBtn();
-			}
+			scheduler.sendInfo(info);
+//			if (buttonPressed()) {
+//				handlePress();
+//				illuminateBtn();
+//			}
 		}
 
 	}
