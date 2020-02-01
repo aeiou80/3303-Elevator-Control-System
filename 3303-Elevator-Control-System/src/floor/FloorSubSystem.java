@@ -12,14 +12,12 @@ import scheduler.Scheduler;
 public class FloorSubSystem implements Runnable {
 
 	private Scheduler scheduler;
-<<<<<<< Upstream, based on origin/iter_1
-	private FloorData info;
 	private List<ArrayList<String>> dataLst;
-=======
+
 	private FloorData sentInfo;
 	private FloorData receivedInfo;
 	private List<ArrayList<String>> lst;
->>>>>>> e41aa61 Added tests
+
 	private WaitTime wait;
 
 	/**
@@ -28,13 +26,13 @@ public class FloorSubSystem implements Runnable {
 	 */
 	public FloorSubSystem(Scheduler s) {
 		scheduler = s;
-<<<<<<< Upstream, based on origin/iter_1
-		info = new FloorData();
+
+		sentInfo = new FloorData();
 		dataLst = new ArrayList<>();
-=======
+
 		sentInfo = new FloorData();
 		lst = new ArrayList<>();
->>>>>>> e41aa61 Added tests
+
 		wait = new WaitTime();
 	}
 
@@ -65,11 +63,8 @@ public class FloorSubSystem implements Runnable {
 				e.printStackTrace();
 			}
 		}
-<<<<<<< Upstream, based on origin/iter_1
-		info.setUp(dataLst.get(0));
-=======
-		sentInfo.setUp(lst.get(0));
->>>>>>> e41aa61 Added tests
+
+		sentInfo.setUp(dataLst.get(0));
 	}
 	
 	public FloorData getsentInfo() {
@@ -84,13 +79,9 @@ public class FloorSubSystem implements Runnable {
 	@Override
 	public void run() {
 		readFile("inputfile.csv");
-
-<<<<<<< Upstream, based on origin/iter_1
-		System.out.println(info.getFloor() + " requested at time: " + info.getTime() + " to go " + info.getFloorButton()
-				+ " to " + info.getCarButton()); // prints data from list of csv inputs
-=======
 		System.out.println(sentInfo.getFloor() + " requested at time: " + sentInfo.getTime() + " to go " + sentInfo.getFloorButton()
-				+ " to " + sentInfo.getCarButton());
+				+ " to " + sentInfo.getCarButton()); // prints data from list of csv inputs
+
 		
 		wait.defaultTime();
 
@@ -100,7 +91,7 @@ public class FloorSubSystem implements Runnable {
 		System.out.println(receivedInfo.getFloor() + " has recieved info from Scheduler: [" + receivedInfo.getTime()
 				+ ", " + receivedInfo.getFloor() + ", " + receivedInfo.getFloorButton() + ", "
 				+ receivedInfo.getCarButton() + "]");
->>>>>>> e41aa61 Added tests
+
 
 		wait.defaultTime();
 
