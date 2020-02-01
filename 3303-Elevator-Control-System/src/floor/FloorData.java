@@ -88,4 +88,8 @@ public class FloorData {
 		}
 		return null;
 	}
+	
+	public String toString() {
+		return "" + this.time + " " + this.floor + " " + this.floorButton + " " + this.carButton;
+	}
 }
