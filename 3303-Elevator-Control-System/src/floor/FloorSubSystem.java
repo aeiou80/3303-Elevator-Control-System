@@ -34,12 +34,12 @@ public class FloorSubSystem implements Runnable {
 		light = false;
 	}
 
-	public  void schedulerNotif() {
+	public void schedulerNotif() {
 		light = true;
 	}
-	
+
 	public synchronized void illuminateBtn() {
-		while(!light) {
+		while (!light) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -48,10 +48,11 @@ public class FloorSubSystem implements Runnable {
 			}
 		}
 		System.out.println(Thread.currentThread().getName());
-		System.out.println("The " + fQ.getDirectionQ().peek() + " Button on " + fQ.getBaseFloorQ().peek() + " has been illuminated");
+		System.out.println("The " + fQ.getDirectionQ().peek() + " Button on " + fQ.getBaseFloorQ().peek()
+				+ " has been illuminated");
 		notifyAll();
 	}
-	
+
 	public FloorDataPacket readFile(String filename) {
 		FileReader fileReader = null;
 		BufferedReader bufferReader = null;
@@ -78,7 +79,7 @@ public class FloorSubSystem implements Runnable {
 		FloorDataPacket info = new FloorDataPacket();
 		info.setUp(lst.get(0));
 		return info;
-		//setFloorQueue();
+		// setFloorQueue();
 	}
 
 	public void setFloorQueue() {
@@ -101,21 +102,25 @@ public class FloorSubSystem implements Runnable {
 	public void handlePress() {
 		System.out.println("Time is " + fQ.getTimeQ().poll());
 		waitTime.defaultTime();
-		notifySched.PassengerPos(fQ.getBaseFloorQ().peek(),this);
+		notifySched.PassengerPos(fQ.getBaseFloorQ().peek(), this);
 
 	}
 
 	@Override
 	public void run() {
-		FloorDataPacket info = readFile("inputfile.csv");
-		System.out.print(info.getFloor() + " requested at time: " + info.getTime() + " to go " + info.getFloorButton() + " to " + info.getCarButton());
-		while (true) {
-			scheduler.sendInfo(info);
+		FloorDataPacket sendInfo = readFile("inputfile.csv");
+		System.out.println(sendInfo.getFloor() + " requested at time: " + sendInfo.getTime() + " to go "
+				+ sendInfo.getFloorButton() + " to " + sendInfo.getCarButton());
+		scheduler.sendInfo(sendInfo);
+		FloorDataPacket recieveInfo = scheduler.getInfo();
+		System.out.println("Elevator has arrived at " + recieveInfo.getFloor());
+		// while (true) {
+
 //			if (buttonPressed()) {
 //				handlePress();
 //				illuminateBtn();
 //			}
-		}
+		// }
 
 	}
 }

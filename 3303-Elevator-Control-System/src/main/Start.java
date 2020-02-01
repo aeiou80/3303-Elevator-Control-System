@@ -1,16 +1,19 @@
 package main;
 
+import elevator.ElevatorSubSystem;
 import floor.FloorSubSystem;
 import scheduler.Scheduler;
 
 public class Start {
 
 	public static void main(String[] args) {
-		Scheduler scheduler = new Scheduler();
-		Thread floor = new Thread(new FloorSubSystem(scheduler), "Floor");
-		Thread scheduler1 = new Thread(scheduler, "Scheduler");
-		scheduler1.start();
+		Scheduler s = new Scheduler();
+		Thread floor = new Thread(new FloorSubSystem(s), "Floor");
+		Thread elevator = new Thread(new ElevatorSubSystem(s), "Elevator");
+		Thread scheduler = new Thread(s, "Scheduler");
+		elevator.start();
 		floor.start();
+		scheduler.start();
 	}
 
 }

@@ -70,20 +70,34 @@ public class Scheduler implements Runnable {
 		}
 
 		this.info = info;
-		System.out.println("\nScheduler recieved info from: " + threadName + " [" + info.getTime() + ", "
+		System.out.println("Scheduler recieved info from: " + threadName + " [" + info.getTime() + ", "
 				+ info.getFloor() + ", " + info.getFloorButton() + ", " + info.getCarButton() + "]");
 		notifyAll();
 	}
 	
 	public synchronized FloorDataPacket getInfo() {
+		String threadName = Thread.currentThread().getName();
 		
-		while (!floorRecieve) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				System.exit(0);
+		if (threadName.equals("Floor")) {
+			while (!elevatorRecieve) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.exit(0);
+				}
 			}
+			elevatorRecieve = false;
+		} else if (threadName.equals("Elevator")) {
+			while (!floorRecieve) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.exit(0);
+				}
+			}
+			floorRecieve = false;
 		}
 		
 		return info;
@@ -99,10 +113,10 @@ public class Scheduler implements Runnable {
 			if (elevatorRecieve) {
 				elevatorRecieve = false;
 			} else if (floorRecieve) {
-				floorHandle(floor);
+				//floorHandle(floor);
 				floorRecieve = false;
 			}
-			waitTime.defaultTime();
+			//waitTime.defaultTime();
 		}
 	}
 
