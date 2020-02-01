@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import constants.Direction;
+import constants.FloorButton;
 
 public class FloorDataPacketTest {
 
@@ -29,7 +29,7 @@ public class FloorDataPacketTest {
 		floorPacket.setUp(data);
 		assertEquals(data.get(0), floorPacket.getTime());
 		assertEquals(data.get(1), Integer.toString(floorPacket.getFloor()));
-		assertEquals(Direction.UP, floorPacket.getFloorButton());
+		assertEquals(FloorButton.UP, floorPacket.getFloorButton());
 		assertEquals(data.get(3), Integer.toString(floorPacket.getCarButton()));
 	}
 

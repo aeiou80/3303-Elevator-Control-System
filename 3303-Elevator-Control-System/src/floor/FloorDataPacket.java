@@ -1,7 +1,8 @@
 package floor;
 
 import java.util.ArrayList;
-import constants.Direction;
+import constants.FloorButton;
+import constants.FloorLevel;
 
 public class FloorDataPacket {
 
@@ -27,20 +28,58 @@ public class FloorDataPacket {
 		return time;
 	}
 
-	public int getFloor() {
-		return Integer.parseInt(floor);
-	}
-
-	public Direction getFloorButton() {
-		if (floorButton.equals("Up")) {
-			return Direction.UP;
-		} else if (floorButton.equals("Down")) {
-			return Direction.DOWN;
+	public FloorLevel getFloor() {
+		int temp = Integer.parseInt(floor);
+		if(temp == 1) {
+			return FloorLevel.Floor1;
 		}
-		return Direction.IDLE;
+		else if (temp == 2) {
+			return FloorLevel.Floor2;
+		}
+		else if (temp == 3) {
+			return FloorLevel.Floor3;
+		}
+		else if (temp == 4) {
+			return FloorLevel.Floor4;
+		}
+		else if (temp == 5) {
+			return FloorLevel.Floor5;
+		}
+		else if (temp == 6) {
+			return FloorLevel.Floor6;
+		}
+		return null;
 	}
 
-	public int getCarButton() {
-		return Integer.parseInt(carButton);
+	public FloorButton getFloorButton() {
+		if (floorButton.equals("Up")) {
+			return FloorButton.UP;
+		} else if (floorButton.equals("Down")) {
+			return FloorButton.DOWN;
+		}
+		return FloorButton.IDLE;
+	}
+
+	public FloorLevel getCarButton() {
+		int temp = Integer.parseInt(carButton);
+		if(temp == 1) {
+			return FloorLevel.Floor1;
+		}
+		else if (temp == 2) {
+			return FloorLevel.Floor2;
+		}
+		else if (temp == 3) {
+			return FloorLevel.Floor3;
+		}
+		else if (temp == 4) {
+			return FloorLevel.Floor4;
+		}
+		else if (temp == 5) {
+			return FloorLevel.Floor5;
+		}
+		else if (temp == 6) {
+			return FloorLevel.Floor6;
+		}
+		return null;
 	}
 }
