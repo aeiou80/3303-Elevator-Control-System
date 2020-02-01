@@ -15,7 +15,6 @@ class SystemTests {
 	void testReadFile() {
 		Scheduler schedule = new Scheduler();
 		FloorSubSystem floor = new FloorSubSystem(schedule);
-		ElevatorSubSystem ele = new ElevatorSubSystem(schedule);
 		floor.readFile("inputfile.csv");
 		assertEquals(floor.getsentInfo().toString(),"05:15.0 2 Up 4");
 	}

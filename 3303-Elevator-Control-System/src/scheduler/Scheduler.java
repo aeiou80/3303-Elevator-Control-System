@@ -9,7 +9,7 @@ public class Scheduler implements Runnable {
 	private boolean elevatorRecieve;
 	private boolean floorRecieve;
 	private WaitTime wait;
-	private boolean flag = false;
+
 
 
 	/**

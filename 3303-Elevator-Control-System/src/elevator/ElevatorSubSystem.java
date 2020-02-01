@@ -9,7 +9,11 @@ public class ElevatorSubSystem implements Runnable {
 	private Scheduler scheduler;
 	private FloorData receivedInfo;
 	private WaitTime wait;
-
+	
+	/**
+	 * constructor for ElevatorSubSystem
+	 * @param s
+	 */
 	public ElevatorSubSystem(Scheduler s) {
 		this.scheduler = s;
 		wait = new WaitTime();
@@ -27,7 +31,7 @@ public class ElevatorSubSystem implements Runnable {
 
 		wait.defaultTime();
 
-		scheduler.sendInfo(receivedInfo);
+		scheduler.sendInfo(receivedInfo); // send info
 
 		System.out.println(
 				Thread.currentThread().getName() + " is going " + receivedInfo.getFloorButton() + " to " + receivedInfo.getCarButton());

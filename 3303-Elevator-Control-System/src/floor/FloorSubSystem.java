@@ -16,7 +16,6 @@ public class FloorSubSystem implements Runnable {
 
 	private FloorData sentInfo;
 	private FloorData receivedInfo;
-	private List<ArrayList<String>> lst;
 
 	private WaitTime wait;
 
@@ -31,7 +30,7 @@ public class FloorSubSystem implements Runnable {
 		dataLst = new ArrayList<>();
 
 		sentInfo = new FloorData();
-		lst = new ArrayList<>();
+		dataLst = new ArrayList<>();
 
 		wait = new WaitTime();
 	}
