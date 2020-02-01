@@ -4,6 +4,11 @@ import elevator.ElevatorSubSystem;
 import floor.FloorSubSystem;
 import scheduler.Scheduler;
 
+/**
+ * Run this
+ * 
+ * @author Cameron Davis, John Warde
+ */
 public class Start {
 
 	public static void main(String[] args) {

@@ -3,14 +3,18 @@ package scheduler;
 import constants.WaitTime;
 import floor.FloorData;
 
+/**
+ * Scheduler class used as a communication pipe between the floor and elevator
+ * sub systems
+ * 
+ * @author Cameron Davis, John Warde
+ */
 public class Scheduler implements Runnable {
 
 	private FloorData info;
 	private boolean elevatorRecieve;
 	private boolean floorRecieve;
 	private WaitTime wait;
-
-
 
 	/**
 	 * constructor method for Scheduler
@@ -22,7 +26,8 @@ public class Scheduler implements Runnable {
 	}
 
 	/**
-	 * method to send info to elevator or floor data
+	 * method to send info to elevator or floor
+	 * 
 	 * @param info
 	 */
 	public synchronized void sendInfo(FloorData info) {
@@ -34,7 +39,7 @@ public class Scheduler implements Runnable {
 			elevatorRecieve = true;
 		else {
 			System.out.println("Invalid thread name.");
-			//System.exit(0);
+			// System.exit(0);
 		}
 
 		this.info = info;
@@ -46,7 +51,6 @@ public class Scheduler implements Runnable {
 	}
 
 	/**
-	 * 
 	 * @return floor data info
 	 */
 	public synchronized FloorData getInfo() {
@@ -60,6 +64,7 @@ public class Scheduler implements Runnable {
 					e.printStackTrace();
 					System.exit(0);
 				}
+				elevatorRecieve = false;
 			}
 
 		} else if (threadName.equals("Elevator")) {
@@ -71,6 +76,7 @@ public class Scheduler implements Runnable {
 					System.exit(0);
 				}
 			}
+			floorRecieve = false;
 		}
 
 		return info;
@@ -78,7 +84,7 @@ public class Scheduler implements Runnable {
 
 	@Override
 	public void run() {
-		
+
 	}
 
 }

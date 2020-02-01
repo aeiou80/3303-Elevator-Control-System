@@ -1,5 +1,10 @@
 package constants;
 
+/**
+ * Class for threads to use to sleep
+ * 
+ * @author John Warde
+ */
 public class WaitTime {
 
 	private TimeConst time;

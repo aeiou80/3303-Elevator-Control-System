@@ -9,6 +9,11 @@ import java.util.List;
 import constants.WaitTime;
 import scheduler.Scheduler;
 
+/**
+ * Floor sub system class that produces instructions for the scheduler
+ * 
+ * @author Eric Vincent, Cameron Davis
+ */
 public class FloorSubSystem implements Runnable {
 
 	private Scheduler scheduler;
@@ -66,10 +71,16 @@ public class FloorSubSystem implements Runnable {
 		sentInfo.setUp(dataLst.get(0));
 	}
 	
+	/**
+	 * @return FloorData that was sent to the scheduler
+	 */
 	public FloorData getsentInfo() {
 		return this.sentInfo;
 	}
 	
+	/**
+	 * @return FloorData that was received from the scheduler
+	 */
 	public FloorData getreceivedInfo() {
 		return this.receivedInfo;
 	}

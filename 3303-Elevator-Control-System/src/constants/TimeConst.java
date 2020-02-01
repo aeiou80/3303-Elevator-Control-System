@@ -1,6 +1,10 @@
 package constants;
 
-// Class representing the wait times
+/**
+ * Class for constant thread sleep times
+ * 
+ * @author John Warde
+ */
 public final class TimeConst {
 
 	public final int LOAD = 4000;

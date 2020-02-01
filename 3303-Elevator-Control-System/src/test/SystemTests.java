@@ -7,6 +7,11 @@ import elevator.ElevatorSubSystem;
 import floor.FloorSubSystem;
 import scheduler.Scheduler;
 
+/**
+ * Elevator Control System test
+ * 
+ * @author Eric Vincent
+ */
 class SystemTests {
 	/**
 	 * Testing the FloorSubSystem's ability to read in files

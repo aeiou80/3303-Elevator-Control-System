@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import constants.FloorButton;
 import constants.FloorLevel;
 
+/**
+ * Data structure class used to store necessary information to be passed between
+ * sub systems
+ * 
+ * @author Eric Vincent, John Warde
+ */
 public class FloorData {
 
 	private String time;
@@ -13,6 +19,7 @@ public class FloorData {
 
 	/**
 	 * method to set up data and convert them to other data structures
+	 * 
 	 * @param data passed in from csv file
 	 */
 	public void setUp(ArrayList<String> data) {
@@ -33,7 +40,6 @@ public class FloorData {
 	}
 
 	/**
-	 * 
 	 * @return floor level
 	 */
 	public FloorLevel getFloor() {
@@ -55,8 +61,7 @@ public class FloorData {
 	}
 
 	/**
-	 * 
-	 * @return up or down 
+	 * @return up or down
 	 */
 	public FloorButton getFloorButton() {
 		if (floorButton.equals("Up")) {
@@ -64,12 +69,11 @@ public class FloorData {
 		} else if (floorButton.equals("Down")) {
 			return FloorButton.DOWN;
 		}
-		return FloorButton.IDLE;
+		return null;
 	}
 
 	/**
-	 * 
-	 * @return destination floor button
+	 * @return destination floor
 	 */
 	public FloorLevel getCarButton() {
 		switch (Integer.parseInt(carButton)) {
@@ -88,7 +92,7 @@ public class FloorData {
 		}
 		return null;
 	}
-	
+
 	public String toString() {
 		return "" + this.time + " " + this.floor + " " + this.floorButton + " " + this.carButton;
 	}
