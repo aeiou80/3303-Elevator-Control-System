@@ -10,14 +10,14 @@ public class NotifyFloor {
 	
 	public NotifyFloor(FloorSubSystem floorSystem) {
 		this.floorSystem = floorSystem;
-		waitTime = new WaitTime();
+		waitTime = new WaitTime(); 
 	}
 	
 	public synchronized void illuminatButton(FloorLevel floor) {
 		System.out.println(Thread.currentThread().getName() + " is sending signal back to " + floor + " to illuminate floor Button");
 		floorSystem.schedulerNotif();
+		waitTime.defaultTime();
 		notifyAll();
-		
 	}
 	
 
