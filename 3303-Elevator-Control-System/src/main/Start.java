@@ -6,12 +6,11 @@ import scheduler.Scheduler;
 public class Start {
 
 	public static void main(String[] args) {
-		Thread floor = new Thread(new FloorSubSystem(),"Floor");
-		Thread scheduler = new Thread(new Scheduler(),"Scheduler");
-		scheduler.start();
+		Scheduler scheduler = new Scheduler();
+		Thread floor = new Thread(new FloorSubSystem(scheduler), "Floor");
+		Thread scheduler1 = new Thread(scheduler, "Scheduler");
+		scheduler1.start();
 		floor.start();
-		
-
 	}
 
 }
