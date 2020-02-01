@@ -3,15 +3,9 @@ package floor;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import Something.NotifyScheduler;
 import Something.WaitTime;
 import scheduler.Scheduler;
@@ -23,10 +17,9 @@ public class FloorSubSystem implements Runnable {
 	private FloorQueue fQ;
 	private NotifyScheduler notifySched;
 	private WaitTime waitTime;
-	DatagramPacket sendPacket, receivePacket;
-	DatagramSocket socket;
-	FloorButton buttons;
-	FloorLamp lamp;
+	private FloorButton buttons;
+	private FloorLamp lamp;
+	private boolean light;
 
 	public FloorSubSystem(Scheduler s) {
 		buttons = new FloorButton();
@@ -36,67 +29,27 @@ public class FloorSubSystem implements Runnable {
 		fQ = new FloorQueue();
 		notifySched = new NotifyScheduler(s);
 		waitTime = new WaitTime();
-
-		try {
-			socket = new DatagramSocket();
-		} catch (SocketException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
+		light = false;
 	}
 
-	public void sendAndReceivePacket() {
-		// Sending Packet
-		// creates string with all relevant information
-		String s = "Passenger at " + Thread.currentThread().getName() + " " + fQ.getBaseFloorQ().peek()
-				+ " going to -> " + fQ.getDestFloorQ().peek() + " at: " + fQ.getTimeQ().peek();
-		byte[] message = s.getBytes();
-
-		// converts string into datagram packet to send to server
-		try {
-			sendPacket = new DatagramPacket(message, message.length, InetAddress.getLocalHost(), 3000);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		// Information of sent packet
-		System.out.println("Client = FloorSubSystem: Sending Info");
-		System.out.println("To ->" + sendPacket.getAddress() + ", port: " + sendPacket.getPort());
-		System.out.println("Contains: " + new String(sendPacket.getData()));
-
-		// sending packet
-		try {
-			socket.send(sendPacket);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		System.out.println("Message Sent Successfully");
-
-		// Receiving Packet
-		// creates packet to receive information
-		byte[] data = new byte[100];
-		receivePacket = new DatagramPacket(data, data.length);
-
-		try {
-			System.out.println("Waiting to receive Packet");
-			socket.receive(receivePacket);
-		} catch (IOException e) {
-			System.out.println("Error: receiving Packet");
-			e.printStackTrace();
-			System.exit(1);
-		}
-
-		System.out.println("Packet received.");
-		System.out.println("From " + receivePacket.getAddress() + ", port: " + receivePacket.getPort());
-		System.out.println("Contains: " + new String(receivePacket.getData()));
+	public  void schedulerNotif() {
+		light = true;
 	}
-
-	/*
-	 * public void sendPacket(FloorDataPacket packet) {
-	 * 
-	 * }
-	 */
+	
+	public synchronized void illuminateBtn() {
+		while(!light) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println(Thread.currentThread().getName());
+		System.out.println("The " + fQ.getDirectionQ().peek() + " Button on " + fQ.getBaseFloorQ().peek() + " has been illuminated");
+		notifyAll();
+	}
+	
 	public void readFile(String filename) {
 		FileReader fileReader = null;
 		BufferedReader bufferReader = null;
@@ -141,10 +94,9 @@ public class FloorSubSystem implements Runnable {
 	}
 
 	public void handlePress() {
-
 		System.out.println("Time is " + fQ.getTimeQ().poll());
 		waitTime.defaultTime();
-		notifySched.PassengerPos(fQ.getBaseFloorQ().poll());
+		notifySched.PassengerPos(fQ.getBaseFloorQ().peek(),this);
 
 	}
 
@@ -154,6 +106,7 @@ public class FloorSubSystem implements Runnable {
 		while (true) {
 			if (buttonPressed()) {
 				handlePress();
+				illuminateBtn();
 			}
 		}
 
