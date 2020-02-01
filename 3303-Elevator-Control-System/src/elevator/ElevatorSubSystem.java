@@ -8,7 +8,7 @@ import scheduler.Scheduler;
  * Class for the elevator sub system that receives information from the
  * scheduler sub system and sends it back
  * 
- * @author Cameron Davis, John Warde, Eric Vincent
+ * @author Cameron Davis, Jake Cassady
  */
 public class ElevatorSubSystem implements Runnable {
 

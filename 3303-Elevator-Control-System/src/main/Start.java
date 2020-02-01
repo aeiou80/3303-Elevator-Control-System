@@ -7,7 +7,7 @@ import scheduler.Scheduler;
 /**
  * Run this
  * 
- * @author Cameron Davis, John Warde
+ * @author John Warde
  */
 public class Start {
 

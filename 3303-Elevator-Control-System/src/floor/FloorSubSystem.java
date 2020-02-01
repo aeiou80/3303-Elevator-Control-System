@@ -12,7 +12,7 @@ import scheduler.Scheduler;
 /**
  * Floor sub system class that produces instructions for the scheduler
  * 
- * @author Eric Vincent, Cameron Davis
+ * @author Eric Vincent, Andrew Foster
  */
 public class FloorSubSystem implements Runnable {
 
