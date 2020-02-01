@@ -1,6 +1,6 @@
 package main;
 
-import FloorSubsystem.FloorSubSystem;
+import floor.FloorSubSystem;
 
 public class Start {
 

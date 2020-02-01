@@ -1,8 +1,7 @@
-package FloorSubsystem;
-
+package floor;
 
 import java.util.ArrayList;
-import Constants.Direction;
+import constants.Direction;
 
 public class FloorDataPacket {
 
@@ -11,7 +10,6 @@ public class FloorDataPacket {
 	private String floorButton;
 	private String carButton;
 
-	
 	public void setUp(ArrayList<String> data) {
 		if (data.size() != 4) {
 			int difference = 4 - data.size();
@@ -30,22 +28,19 @@ public class FloorDataPacket {
 	}
 
 	public int getFloor() {
-		int temp = Integer.parseInt(floor);
-		return temp;
+		return Integer.parseInt(floor);
 	}
 
 	public Direction getFloorButton() {
-		if(floorButton.equals("Up")){
+		if (floorButton.equals("Up")) {
 			return Direction.UP;
-		}
-		else if(floorButton.equals("Down")) {
+		} else if (floorButton.equals("Down")) {
 			return Direction.DOWN;
 		}
 		return Direction.IDLE;
 	}
 
 	public int getCarButton() {
-		int temp = Integer.parseInt(carButton);
-		return temp;
+		return Integer.parseInt(carButton);
 	}
 }
