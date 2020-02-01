@@ -5,7 +5,11 @@ A soon-to-be, full-fledged concurrent elevator control system and simulator that
 
 ## The team
 Jake Cassady (jakecassady)
+
 Cameron Davis (aeiou80)
+
 Andrew Foster (Ajfoster4444)
+
 Eric Vincent (EricOfTweed)
+
 John Ward (Imcool4789)
