@@ -10,6 +10,7 @@ import constants.FloorLevel;
  * 
  * @author Eric Vincent, John Warde
  */
+
 public class FloorData {
 
 	private String time;
