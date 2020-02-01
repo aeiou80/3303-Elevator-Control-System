@@ -1,7 +1,7 @@
 package floor;
 
 import java.util.ArrayList;
-import constants.Direction;
+import Constants.Direction;
 
 public class FloorDataPacket {
 

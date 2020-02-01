@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import constants.Direction;
+import Constants.Direction;
 
 public class FloorDataPacketTest {
 
