@@ -1,4 +1,4 @@
-package Schedular;
+package scheduler;
 
 public class Scheduler implements Runnable {
 	

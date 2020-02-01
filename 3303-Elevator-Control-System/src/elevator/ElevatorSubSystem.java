@@ -1,7 +1,7 @@
 package elevator;
 
-import Schedular.Scheduler;
 import floor.FloorDataPacket;
+import scheduler.Scheduler;
 
 public class ElevatorSubSystem implements Runnable {
 
