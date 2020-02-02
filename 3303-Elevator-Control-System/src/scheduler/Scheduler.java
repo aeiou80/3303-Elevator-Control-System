@@ -40,7 +40,6 @@ public class Scheduler implements Runnable {
 			elevatorRecieve = true;
 		else {
 			System.out.println("Invalid thread name.");
-			// System.exit(0);
 		}
 
 		this.info = info;
@@ -65,7 +64,6 @@ public class Scheduler implements Runnable {
 					e.printStackTrace();
 					System.exit(0);
 				}
-				elevatorRecieve = false;
 			}
 
 		} else if (threadName.equals("Elevator")) {
@@ -77,7 +75,6 @@ public class Scheduler implements Runnable {
 					System.exit(0);
 				}
 			}
-			floorRecieve = false;
 		}
 
 		return info;
