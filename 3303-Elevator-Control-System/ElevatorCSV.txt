@@ -1,0 +1,7 @@
+Time	Floor	Floor Button	Car Button
+2:05:15:05	2	Up	4
+2:07:15:05	1	Up	4
+2:07:15:05	4	Down	2
+2:07:25:05	1	Up	20
+2:08:15:05	1	Up	6
+2:08:45:05	14	Up	1
