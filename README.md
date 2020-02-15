@@ -38,21 +38,35 @@ John Warde (Imcool4789)
   John Warde: UML Diagrams, Sequence Diagram, Test Cases
   
 ## Classes
- Elevator: The elevator object, receives info and travels to specified floors
- ElevatorSubSystem: initializes the Elevator(s) and runs their start methods
- EndState: An Elevator State in which the Elevator will do nothing
- Floor: An Object that represents a floor of a bui;ding with a set floor number
- FloorButton: The up or down button on each floor 
- FloorLamp: The lamps for the up and down buttons, are active when the FloorButton is pressed
- FloorSubSystem: The subsytem responsible for reading in requests and sending them off to the scheduler
- inforElevatorSystem:
- MoveState: An Elevator State for when the Elevator is moving, either up or down
+ Elevator: The elevator object, receives info and travels to specified floors.
+ 
+ ElevatorSubSystem: initializes the Elevator(s) and runs their start methods.
+ 
+ EndState: An Elevator State in which the Elevator will do nothing.
+ 
+ Floor: An Object that represents a floor of a bui;ding with a set floor number.
+ 
+ FloorButton: The up or down button on each floor.
+ 
+ FloorLamp: The lamps for the up and down buttons, are active when the FloorButton is pressed.
+ 
+ FloorSubSystem: The subsytem responsible for reading in requests and sending them off to the scheduler.
+ 
+ inforElevatorSystem: Stores info on the elevator system(s), such as their port number and current floor.
+ 
+ MoveState: An Elevator State for when the Elevator is moving, either up or down.
+ 
  readFile: Provides the static method that allows a file to be read in.
+ 
  Scheduler: When in READINGFROMFLOOR State, messages are received from the floor subsystem and sent to the elevator. The opposite occures in READINGFROMELEVATOR State.
- ScheduleStateEnum: Constant Enums for the States of the scheduler
- StateE: Abstract class that all Elevator States extend
- StopState: An Elevator State that occurs when the Elevator reaches the floor, and allows door to open and close
- test
+ 
+ ScheduleStateEnum: Constant Enums for the States of the scheduler.
+ 
+ StateE: Abstract class that all Elevator States extend.
+ 
+ StopState: An Elevator State that occurs when the Elevator reaches the floor, and allows door to open and close.
+ 
+ test:
   
 ## The team
 Jake Cassady (jakecassady)
