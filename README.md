@@ -13,6 +13,9 @@ This project aims to be a multi-threaded elevator control system simulator that 
   
   Note: Scheduler and Elevator should be running before the FloorSubSystem
 
+## Testing
+  Run Tests.java as a junit test
+
 ## The team
 Jake Cassady (jakecassady)
 
@@ -65,16 +68,5 @@ John Warde (Imcool4789)
  StateE: Abstract class that all Elevator States extend.
  
  StopState: An Elevator State that occurs when the Elevator reaches the floor, and allows door to open and close.
- 
- test:
-  
-## The team
-Jake Cassady (jakecassady)
 
-Cameron Davis (aeiou80)
-
-Andrew Foster (Ajfoster4444)
-
-Eric Vincent (EricOfTweed)
-
-John Ward (Imcool4789)
+ Tests: junit test file
