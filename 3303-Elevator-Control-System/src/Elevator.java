@@ -19,7 +19,7 @@ public class Elevator implements Runnable {
 	private DatagramPacket receivePacket;
 	private int portNumber;
 	private int motor;// -1:down 1:up 0:stop
-	private int button;// the floor number chose by user
+	private int button;// the floor number chosen by passenger
 	private int floorSensor;// the floor number where elevator is
 	private Set<Integer> elevatorLamps;// the floor numbers that elevator need to stop by
 	private StateE state;
@@ -42,7 +42,7 @@ public class Elevator implements Runnable {
 	}
 
 	/*
-	 * @override the run function is override such that the elevators
+	 * @override the run function is overridden such that the elevators
 	 * can run concurrently and implements what developer want elevators
 	 * to do.
 	 */
@@ -172,27 +172,13 @@ public class Elevator implements Runnable {
 	}
 	
 	/*
-	 * set the moving status of elevator 
-	 * @param b:boolean variavle of moving status
-	 */
-	public void setElevatorMoving(Boolean b) {
-	}
-
-	/*
-	 * set the moving status of door
-	 * @param b:boolean variavle of door status
-	 */
-	public void setDoor(Boolean b) {
-	}
-
-	/*
 	 * get the motor status 
 	 * @return motor status in integer
 	 */
 	public int getMotor() {
 		return motor;
 	}
-
+	
 	/*
 	 * active and set the floor sensor
 	 * @param f :a floor sensor object
@@ -200,7 +186,7 @@ public class Elevator implements Runnable {
 	public void setFloorSensor(int f) {
 		floorSensor = f;
 	}
-
+	
 	/*
 	 * get the status of floor sensor
 	 * @return floor sensor status in integer
@@ -210,7 +196,7 @@ public class Elevator implements Runnable {
 	}
 
 	/*
-	 * convert arraylist to string
+	 * convert a message string to arraylist
 	 * @param msg :a msg string 
 	 * @return a arraylist which contains strings
 	 */
@@ -263,7 +249,7 @@ public class Elevator implements Runnable {
 	 * @param len :the length of data
 	 * @param address :the destination inet address
 	 * @param sendPacket :the datagram Packet which is going to be send 
-	 * @param sendReceiveSocket :the socket which is used to send and receive massage
+	 * @param sendReceiveSocket :the socket which is used to send and receive message
 	 * @param port :the destination port 	 
 	 */
 	public void sendMsg(byte[] data, int len, InetAddress address, DatagramPacket sendPacket,
@@ -284,8 +270,8 @@ public class Elevator implements Runnable {
 	}
 
 	/*
-	 * receive the massage 
-	 * @param receiveSocket :the socket which is used to receive massage
+	 * receive the message 
+	 * @param receiveSocket :the socket which is used to receive message
 	 * @return a list of bytes
 	 */
 	public byte[] receiveMsg(DatagramSocket receiveSocket) {
@@ -324,5 +310,10 @@ public class Elevator implements Runnable {
 
 	public void log(String msg) {
 		System.out.println("Log: " + msg);
+	}
+	
+	//Used for testing
+	public String getState() {
+		return state.stateName;
 	}
 }

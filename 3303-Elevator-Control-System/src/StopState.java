@@ -10,16 +10,15 @@ public class StopState extends StateE {
 	 */
 	public StopState (Elevator ele) {
 		super(ele);
+		stateName = "stopped";
 	}
 	
 	/*
 	 * action of the door
 	 */
 	public void moveDoor() {
-		elevator.setElevatorMoving(false);
 		try {
 			elevator.log(Thread.currentThread().getName() + " Open the Door");
-			elevator.setDoor(true);
 			Thread.sleep(OpenDoorTime);
 			elevator.log(Thread.currentThread().getName() + " Hold the Door");
 			Thread.sleep(HoldDoorTime);

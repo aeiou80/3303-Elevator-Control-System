@@ -6,6 +6,7 @@ public class MoveState extends StateE {
 
 	public MoveState(Elevator ele) {
 		super(ele);
+		stateName = "moving";
 	}
 
 	public void moveDoor() {
@@ -13,7 +14,6 @@ public class MoveState extends StateE {
 	}
 
 	public void moveElevator() {
-		elevator.setElevatorMoving(true);
 		if(elevator.getMotor()>0) {
 			elevator.log(Thread.currentThread().getName() + " Move Up");
 		}

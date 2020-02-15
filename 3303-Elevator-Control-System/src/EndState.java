@@ -6,6 +6,7 @@ public class EndState extends StateE {
 
 	public EndState (Elevator ele) {
 		super(ele);
+		stateName = "end";
 	}
 	public void moveDoor() {
 		elevator.log("Door Doesn't Move");
