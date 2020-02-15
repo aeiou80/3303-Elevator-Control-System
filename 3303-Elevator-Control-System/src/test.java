@@ -1,3 +1,4 @@
+
 /*
  * test class for elevatorSubsystem
  */
@@ -6,12 +7,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.*;
-
-
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class test {
-	
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		test test = new test();
@@ -32,19 +31,20 @@ public class test {
 		data = test.fixByteArrLength(receivePacket.getLength(), data);
 		s = new String(data);
 		test.log(s);
-		
+
 		///////////////////////////////////////////////////////////
-		
-		
 
 	}
+
 	public ArrayList<String> stringToList(String msg) {
-		ArrayList<String>arrayList = new ArrayList<String>(Arrays.asList(msg.split(",")));
+		ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(msg.split(",")));
 		return arrayList;
 	}
+
 	public void log(String msg) {
 		System.out.println("Log: " + msg);
 	}
+
 	public void sendMsg(byte[] data, int len, InetAddress address, DatagramPacket sendPacket,
 			DatagramSocket sendReceiveSocket, int port) throws IOException {
 
@@ -76,14 +76,15 @@ public class test {
 			System.exit(1);
 		}
 		data = fixByteArrLength(receivePacket.getLength(), data);
-		log("Server: Packet received:");
-		log("From host: " + receivePacket.getAddress());
+		log("Elevator: Packet received:");
+		log("From scheduler: " + receivePacket.getAddress());
 		log("Host port: " + receivePacket.getPort());
 		int len = receivePacket.getLength();
 		log("Length: " + len);
 		log("Containing: " + new String(data, 0, len));
 		return data;
 	}
+
 	public byte[] fixByteArrLength(int len, byte[] arr) {
 		byte newdata[] = new byte[len];
 		System.arraycopy(arr, 0, newdata, 0, newdata.length);
