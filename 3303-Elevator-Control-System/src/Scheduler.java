@@ -9,11 +9,12 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class Scheduler {
 
 	Floor floor;
-
+	InetAddress elevatorAddress;
 	String[] PackageInfo = new String[4];
 	private int[] portNumber = new int[4];
 	DatagramSocket Socket;
@@ -21,13 +22,14 @@ public class Scheduler {
 	DatagramPacket sendPacket, receivePacket;
 	inforElevatorSystem[] elevators;
 	private int clientport;
+	InetAddress clientAddress;
 	ScheduleStateEnum state;
 	boolean testFlag;
 
 	/*
 	 * constructor of scheduler
 	 */
-	public Scheduler() {
+	public Scheduler(String address) {
 		testFlag = false;
 		state = ScheduleStateEnum.READINGFROMFLOOR;
 		elevators = new inforElevatorSystem[4];
@@ -46,10 +48,25 @@ public class Scheduler {
 		}
 		try {
 			Socket = new DatagramSocket(3000);
+			if(address.contentEquals("local")) {
+				elevatorAddress = InetAddress.getLocalHost();
+			}
+			else {
+				try {
+					elevatorAddress = InetAddress.getByName(address);
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		} catch (SocketException e) {
 			e.printStackTrace();
 			System.exit(1);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 
 	}
 
@@ -68,6 +85,7 @@ public class Scheduler {
 				System.out.println("Scheduler waiting for data...");
 				Socket.receive(receivePacket);
 				clientport = receivePacket.getPort();
+				clientAddress = receivePacket.getAddress();
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(1);
@@ -118,13 +136,7 @@ public class Scheduler {
 
 			byte msg[] = s.getBytes();
 			int sendPort = portNumber[chosenElevator] - 1000;
-			try {
-				sendPacket = new DatagramPacket(msg, msg.length, InetAddress.getLocalHost(), sendPort);
-
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
+			sendPacket = new DatagramPacket(msg, msg.length, elevatorAddress, sendPort);
 			elevators[chosenElevator].setCurrentFloor(Integer.parseInt(PackageInfo[1]));
 
 			System.out.println("Scheduler sending package to ElevatorSubsystem...");
@@ -171,7 +183,7 @@ public class Scheduler {
 				System.exit(1);
 			}
 
-			sendPacket = new DatagramPacket(getReply, receivePacket2.getLength(), receivePacket2.getAddress(),
+			sendPacket = new DatagramPacket(getReply, receivePacket2.getLength(), clientAddress,
 					clientport);
 
 			System.out.println("Package sending to FloorSubSytem...\n");
@@ -195,7 +207,27 @@ public class Scheduler {
 	}
 
 	public static void main(String[] args) {
-		Scheduler s = new Scheduler();
+		boolean correctInput = false;
+		String address = "local";
+		while(!correctInput) {
+			System.out.println("Would you like to connect to custom host? Or connect to local host for the scheduler? (custom/local)");
+			Scanner in = new Scanner(System.in);
+			String input = in. nextLine();
+			if(input.toLowerCase().equals("local")) {
+				correctInput = true;
+			}
+			else if (input.toLowerCase().equals("custom")) {
+				System.out.println("Please enter the IP address of the Scheduler Host Machine:");
+				in = new Scanner(System.in);
+				input = in. nextLine();
+				address = input;
+				correctInput = true;
+			}
+			else {
+				System.out.println("Please enter a valid input. (custom/local)");
+			}
+			}
+		Scheduler s = new Scheduler(address);
 		while (true) {
 			s.receivePacket();
 		}

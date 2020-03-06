@@ -38,7 +38,6 @@ public class Elevator implements Runnable {
 		motor = 0;
 		floorSensor = 1;
 		elevatorLamps = new HashSet<Integer>();
-
 	}
 
 	/*

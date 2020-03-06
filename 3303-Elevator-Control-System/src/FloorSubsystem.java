@@ -10,9 +10,11 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class FloorSubsystem {
 
+	private InetAddress targetAddress;
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket Socket;
 	static FloorButton buttons;
@@ -24,8 +26,7 @@ public class FloorSubsystem {
 	/*
 	 * constructor of floor subsystem
 	 */
-	public FloorSubsystem() {
-
+	public FloorSubsystem(String address) {
 		testFlag = false;
 		testFlag2 = false;
 		time = "";
@@ -34,9 +35,23 @@ public class FloorSubsystem {
 
 		try {
 			Socket = new DatagramSocket();
+			if(address.contentEquals("local")) {
+				targetAddress = InetAddress.getLocalHost();
+			}
+			else {
+				try {
+					targetAddress = InetAddress.getByName(address);
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		} catch (SocketException e) {
 			e.printStackTrace();
 			System.exit(1);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -115,13 +130,7 @@ public class FloorSubsystem {
 
 		byte[] msg = a.getBytes();
 
-		try {
-			sendPacket = new DatagramPacket(msg, msg.length, InetAddress.getLocalHost(), 3000);
-
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
+		sendPacket = new DatagramPacket(msg, msg.length, targetAddress, 3000);
 
 		System.out.println("Floor sending...");
 		System.out.println("To " + sendPacket.getAddress() + ", post: " + sendPacket.getPort());
@@ -159,13 +168,32 @@ public class FloorSubsystem {
 	}
 
 	public static void main(String[] args) {
+		boolean correctInput = false;		
+		String address = "local";
 		ArrayList<String> list = new ArrayList<>();
 		readFile reader = new readFile();
 		list = reader.toArrayByFileRead("ElevatorCSV.txt");
 		int acurrent, atarget;
 		String time, direction;
-
-		FloorSubsystem aclient = new FloorSubsystem();
+		while(!correctInput) {
+		System.out.println("Would you like to connect to custom host? Or connect to local host for the scheduler? (custom/local)");
+		Scanner in = new Scanner(System.in);
+		String input = in. nextLine();
+		if(input.toLowerCase().equals("local")) {
+			correctInput = true;
+		}
+		else if (input.toLowerCase().equals("custom")) {
+			System.out.println("Please enter the IP address of the Scheduler Host Machine:");
+			in = new Scanner(System.in);
+			input = in. nextLine();
+			address = input;
+			correctInput = true;
+		}
+		else {
+			System.out.println("Please enter a valid input. (custom/local)");
+		}
+		}
+		FloorSubsystem aclient = new FloorSubsystem(address);
 
 		for (int i = 0; i < list.size(); i++) {
 			String[] newList = list.get(i).split("\t");

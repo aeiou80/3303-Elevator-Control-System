@@ -11,8 +11,8 @@ class Tests {
 
 	@Test
 	void testSettersGetters() {
-		FloorSubsystem floor = new FloorSubsystem();
-		floor = new FloorSubsystem();
+		FloorSubsystem floor = new FloorSubsystem("local");
+		floor = new FloorSubsystem("local");
 		floor.setTime("1:00.0");
 		floor.setFloor(1);
 		floor.setDirection("Up");
@@ -26,8 +26,8 @@ class Tests {
 
 	@Test
 	void testFloorSend() {
-		FloorSubsystem floor = new FloorSubsystem();
-		floor = new FloorSubsystem();
+		FloorSubsystem floor = new FloorSubsystem("local");
+		floor = new FloorSubsystem("local");
 		floor.setTime("1:00.0");
 		floor.setFloor(1);
 		floor.setDirection("Up");
@@ -40,15 +40,15 @@ class Tests {
 
 	@Test
 	void testSchedulerSendReceive() {
-		FloorSubsystem floor = new FloorSubsystem();
-		floor = new FloorSubsystem();
+		FloorSubsystem floor = new FloorSubsystem("local");
+		floor = new FloorSubsystem("local");
 		floor.setTime("1:00.0");
 		floor.setFloor(1);
 		floor.setDirection("Up");
 		floor.setTargetFloor(4);
 
 		floor.testFlag = true;
-		s = new Scheduler();
+		s = new Scheduler("local");
 		s.testFlag = true;
 		floor.sendAndReceive();
 		s.receivePacket();
