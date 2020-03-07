@@ -25,6 +25,7 @@ public class Scheduler {
 	InetAddress clientAddress;
 	ScheduleStateEnum state;
 	boolean testFlag;
+	private int chosenElevator;
 
 	/*
 	 * constructor of scheduler
@@ -32,8 +33,8 @@ public class Scheduler {
 	public Scheduler(String address) {
 		testFlag = false;
 		state = ScheduleStateEnum.READINGFROMFLOOR;
-		elevators = new inforElevatorSystem[4];
-		elevatorSockets = new DatagramSocket[4];
+		elevators = new inforElevatorSystem[3];
+		elevatorSockets = new DatagramSocket[3];
 
 		for (int i = 0; i < this.elevators.length; i++) {
 			this.portNumber[i] = 2000 + i;
@@ -74,7 +75,6 @@ public class Scheduler {
 	 * receive massage from a port and send a massage to destination port.
 	 */
 	public void receivePacket() {
-		int chosenElevator = 0;
 		switch (state) {
 
 		case READINGFROMFLOOR:
@@ -102,36 +102,26 @@ public class Scheduler {
 			this.PackageInfo = ss.split("\t");
 
 			System.out.println(PackageInfo[1] + PackageInfo[2] + PackageInfo[3] + PackageInfo[0]);
+			//Logic to determine which elevator goes where
+			int minimumDistance = Integer.MAX_VALUE;
+			int distance = 0;
+			chosenElevator = 0;
 			String s = "";
-
-			/*
-			 * Logic to determine which elevator goes where, not applicable until ITERATION
-			 * 3 int minimumDistance = Integer.MAX_VALUE; int distance = 0; int
-			 * chosenElevator = 0; String s = ""; for(int i = 0; i < this.elevators.length;
-			 * i++) { distance = Math.abs(Integer.parseInt(PackageInfo[1]) -
-			 * elevators[i].getCurrentFloor()); if( distance < minimumDistance) {
-			 * minimumDistance = distance; chosenElevator = i; } }
-			 * 
-			 * 
-			 */
-			int distance = Math.abs(Integer.parseInt(PackageInfo[1]) - elevators[0].getCurrentFloor()); // Subtract
-																										// elevators
-																										// current floor
-																										// from the
-																										// suggested
-																										// floor
-
-			if (distance > 0) {
-				s = "Up" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," + PackageInfo[3]; // If suggested floor is
-																								// higher than elevators
-																								// current floor
-			} else if (distance < 0) {
-				s = "Down" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," + PackageInfo[3]; // If suggested floor
-																									// lower than
-																									// current floor
+			for(int i = 0; i < this.elevators.length; i++) {
+				distance =  Math.abs(Integer.parseInt(PackageInfo[1]) - elevators[i].getCurrentFloor());
+				if( distance < minimumDistance) {
+					minimumDistance = distance;
+					chosenElevator = i;
+				}
+			}
+			
+		
+			if(distance > 0) {
+				s = "Up" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," +  PackageInfo[3];
+			} else if(distance < 0) {
+				s = "Down" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," +  PackageInfo[3];
 			} else {
-				s = "Stop" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," + PackageInfo[3]; // If at the requested
-																									// floor
+				s = "Stop" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," +  PackageInfo[3];
 			}
 
 			byte msg[] = s.getBytes();

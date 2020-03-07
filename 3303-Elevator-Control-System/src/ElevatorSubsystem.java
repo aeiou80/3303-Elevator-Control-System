@@ -8,15 +8,13 @@ public class ElevatorSubsystem {
 
 
 	public static void main(String args[]) throws Exception, IOException {
-		Thread a, b, c, d;
+		Thread a, b, c;
 		a = new Thread(new Elevator(1000),"Elevator NO.1");
-		//b = new Thread(new Elevator(1001),"Elevator NO.2");
-		//c = new Thread(new Elevator(1002),"Elevator NO.3");
-		//d = new Thread(new Elevator(1003),"Elevator NO.4");
+		b = new Thread(new Elevator(1001),"Elevator NO.2");
+		c = new Thread(new Elevator(1002),"Elevator NO.3");
 		a.start();
-		//b.start();
-		//c.start();
-		//d.start();
+		b.start();
+		c.start();
 		
 	}
 
