@@ -9,9 +9,9 @@ This project aims to be a multi-threaded elevator control system simulator that 
 
 ## Set-up
   Import the 3303-Elevator-Control-System folder into Eclipse
-  Run the ElevatorSubSystem,Scheduler and FloorSubSystem class.
+  Run the ElevatorSubSystem,Scheduler and FloorSubSystem class. If you wish to run each subsystem on a seperate machines, use custom host by typing "custom" at the Floor and Scheduler prompts. IP address can be found by running the FindAddress class's main method. The target IP address of the Floor subsystem should be the Address of the Scheduler machine, and the target IP address of scheduler should be the Address of the Elevator machine.
   
-  Note: Scheduler and Elevator should be running before the FloorSubSystem
+Note: Scheduler and Elevator should be shown as waiting before the FloorSubSystem should start sending
 
 ## Testing
   Run Tests.java as a junit test
