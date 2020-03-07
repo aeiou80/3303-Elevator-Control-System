@@ -25,7 +25,7 @@ Andrew Foster: Scheduler Algorithm
 
 Cameron Davis: Javadocs, tests
 
-Eric vincent: Multi-Machine communication
+Eric Vincent: Multi-Machine communication
 
 Jake Cassady: README.txt, tests
 
@@ -40,7 +40,7 @@ Import the 3303-Elevator-Control-System folder into Eclipse
 
 Run the ElevatorSubSystem, Scheduler and FloorSubSystem class. 
 
-If you wish to run each subsystem on a seperate machines, use custom host by typing "custom" at the Floor and Scheduler prompts.   Otherwise, you may type "local" for local host.
+If you wish to run each subsystem on a separate machines, use custom host by typing "custom" at the Floor and Scheduler prompts.   Otherwise, you may type "local" for local host.
 
 IP address can be found by running the FindAddress class's main method. 
 
@@ -49,7 +49,11 @@ The target IP address of the Floor subsystem should be the Address of the Schedu
 Note: Scheduler and Elevator should be shown as waiting before the FloorSubSystem should start sending
 
 
-Concurrency Change:
+Concurrency Control Change:
 
+In the previous iteration, the scheduler was essentially just a messenger between a single elevator and the floor subsystem.
+There wasn't much concurrency, as each part had to wait until another part finished it's work to continue.
+In this iteration, the scheduler receives the information from the floor subsystem and determines which elevator to send it to.
+This allows multiple elevators to run concurrently to carry more passengers.
 
 

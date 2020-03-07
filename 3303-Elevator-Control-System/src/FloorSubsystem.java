@@ -165,7 +165,7 @@ public class FloorSubsystem {
 		System.out.println("From " + receivePacket.getAddress() + ", post: " + receivePacket.getPort());
 		System.out.println("Contains: " + new String(receivePacket.getData()));
 
-		// Socket.close();
+		//Socket.close();
 	}
 
 	public static void main(String[] args) {
@@ -194,7 +194,7 @@ public class FloorSubsystem {
 			}
 		}
 		FloorSubsystem aclient = new FloorSubsystem(address);
-
+ 
 		for (int i = 0; i < list.size(); i++) {
 			String[] newList = list.get(i).split("\t");
 			try {
