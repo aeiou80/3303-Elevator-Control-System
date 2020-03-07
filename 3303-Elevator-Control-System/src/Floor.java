@@ -1,8 +1,9 @@
 
-/*
+/**
  * Floor class contains all get and set functions for floor
+ * 
+ * @author Andrew Foster
  */
-
 public class Floor {
 	private int floorNumber;
 
@@ -15,6 +16,7 @@ public class Floor {
 	
 	/**
 	 * This consructor allows the user to set the floor number.
+	 * 
 	 * @param floorNumber The floor of reference. 
 	 */
 	public Floor(int floorNumber) {
@@ -23,6 +25,7 @@ public class Floor {
 
 	/**
 	 * Allows the user to access the current floor number.
+	 * 
 	 * @return the current floor number.
 	 */
 	public int getFloorNumber() {
@@ -31,6 +34,7 @@ public class Floor {
 	
 	/**
 	 * Allows the user to set the current floor number.
+	 * 
 	 * @param floorNumber the floor number desired.
 	 */
 	public void setFloorNumber(int floorNumber) {

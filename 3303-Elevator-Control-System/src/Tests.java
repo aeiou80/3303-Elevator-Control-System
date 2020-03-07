@@ -55,7 +55,7 @@ class Tests {
 		assertFalse(s.receivePacket == null); // packet received by scheduler
 		assertFalse(s.sendPacket == null); // packet sent by scheduler
 	}
-	
+
 	@Test
 	void testPickUpElevatorState() {
 		Elevator e = new Elevator(1000);
@@ -64,11 +64,11 @@ class Tests {
 		ArrayList<String> arr = new ArrayList<String>();
 		arr.add("Up");
 		arr.add("5");
-		e.pickUpPassager(arr);
+		e.pickUpPassenger(arr);
 		assertEquals("The elevator didn't stop!", "stopped", e.getState());
 		assertEquals("The elevator didn't end on floor 5", 5, e.getFloorSensor());
 	}
-	
+
 	@Test
 	void testDeliverElevatorState() {
 		Elevator e = new Elevator(1001);
@@ -79,7 +79,7 @@ class Tests {
 		arr.add("5");
 		arr.add("Up");
 		arr.add("8");
-		e.deliveryPassager(arr);
+		e.deliverPassenger(arr);
 		assertEquals("The elevator didn't stop!", "stopped", e.getState());
 		assertEquals("The elevator didn't end on floor 8", 8, e.getFloorSensor());
 	}
