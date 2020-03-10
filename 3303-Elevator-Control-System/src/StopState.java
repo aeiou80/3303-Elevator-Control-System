@@ -1,20 +1,24 @@
-/*
- * StopState class indicates what will the elevator in stop mode do 
- * when it receives signal of a activity.
+
+/**
+ * StopState class indicates how the elevator will react in its stop state when
+ * it receives signal of passenger activity.
+ * 
+ * @author Andrew Foster
  */
 public class StopState extends StateE {
 
-	/*
-	 * constructor of StopState
-	 * @param ele :an elevator 
+	/**
+	 * StopState constructor
+	 * 
+	 * @param ele an elevator
 	 */
-	public StopState (Elevator ele) {
+	public StopState(Elevator ele) {
 		super(ele);
 		stateName = "stopped";
 	}
-	
-	/*
-	 * action of the door
+
+	/**
+	 * Elevator door reacts accordingly in the Stop state
 	 */
 	public void moveDoor() {
 		try {
@@ -27,15 +31,14 @@ public class StopState extends StateE {
 		} catch (InterruptedException e) {
 			elevator.log("Door Movement: Sleep() is Going Wrong");
 			e.printStackTrace();
-		}		
+		}
 	}
-	
-	/*
-	 * action of elevator
+
+	/**
+	 * Elevator movement reacts accordingly in the Stop state
 	 */
 	public void moveElevator() {
 		elevator.log(Thread.currentThread().getName() + " Don't Move");
 	}
-	
 
 }

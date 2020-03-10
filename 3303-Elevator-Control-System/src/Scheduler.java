@@ -1,8 +1,3 @@
-/*
- * Scheduler class receive massage from floor subsystem, then schedule 
- * the devices and elevators.
- */
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,6 +6,13 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+/**
+ * Scheduler class receives a packet from floor and elevator subsystems, then
+ * schedules the devices and elevators.
+ * 
+ * @author Andrew Foster, Eric Vincent
+ * @documentation Cameron Davis
+ */
 public class Scheduler {
 
 	Floor floor;
@@ -27,9 +29,6 @@ public class Scheduler {
 	boolean testFlag;
 	private int chosenElevator;
 
-	/*
-	 * constructor of scheduler
-	 */
 	public Scheduler(String address) {
 		testFlag = false;
 		state = ScheduleStateEnum.READINGFROMFLOOR;
@@ -49,14 +48,12 @@ public class Scheduler {
 		}
 		try {
 			Socket = new DatagramSocket(3000);
-			if(address.contentEquals("local")) {
+			if (address.contentEquals("local")) {
 				elevatorAddress = InetAddress.getLocalHost();
-			}
-			else {
+			} else {
 				try {
 					elevatorAddress = InetAddress.getByName(address);
 				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -64,17 +61,17 @@ public class Scheduler {
 			e.printStackTrace();
 			System.exit(1);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
-	/*
-	 * receive massage from a port and send a massage to destination port.
+	/**
+	 * Wait to receive a DatagramPacket sent from either the Floor or Elevator
+	 * depending on the current state of the Scheduler and parse its data
 	 */
 	public void receivePacket() {
+
 		switch (state) {
 
 		case READINGFROMFLOOR:
@@ -102,26 +99,25 @@ public class Scheduler {
 			this.PackageInfo = ss.split("\t");
 
 			System.out.println(PackageInfo[1] + PackageInfo[2] + PackageInfo[3] + PackageInfo[0]);
-			//Logic to determine which elevator goes where
+			// Logic to determine which elevator goes where
 			int minimumDistance = Integer.MAX_VALUE;
 			int distance = 0;
 			chosenElevator = 0;
 			String s = "";
-			for(int i = 0; i < this.elevators.length; i++) {
-				distance =  Math.abs(Integer.parseInt(PackageInfo[1]) - elevators[i].getCurrentFloor());
-				if( distance < minimumDistance) {
+			for (int i = 0; i < this.elevators.length; i++) {
+				distance = Math.abs(Integer.parseInt(PackageInfo[1]) - elevators[i].getCurrentFloor());
+				if (distance < minimumDistance) {
 					minimumDistance = distance;
 					chosenElevator = i;
 				}
 			}
-			
-		
-			if(distance > 0) {
-				s = "Up" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," +  PackageInfo[3];
-			} else if(distance < 0) {
-				s = "Down" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," +  PackageInfo[3];
+
+			if (distance > 0) {
+				s = "Up" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," + PackageInfo[3];
+			} else if (distance < 0) {
+				s = "Down" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," + PackageInfo[3];
 			} else {
-				s = "Stop" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," +  PackageInfo[3];
+				s = "Stop" + "," + PackageInfo[1] + "," + PackageInfo[2] + "," + PackageInfo[3];
 			}
 
 			byte msg[] = s.getBytes();
@@ -173,8 +169,7 @@ public class Scheduler {
 				System.exit(1);
 			}
 
-			sendPacket = new DatagramPacket(getReply, receivePacket2.getLength(), clientAddress,
-					clientport);
+			sendPacket = new DatagramPacket(getReply, receivePacket2.getLength(), clientAddress, clientport);
 
 			System.out.println("Package sending to FloorSubSytem...\n");
 			System.out.println("to " + receivePacket2.getAddress() + " , host:" + receivePacket2.getPort());
@@ -199,24 +194,23 @@ public class Scheduler {
 	public static void main(String[] args) {
 		boolean correctInput = false;
 		String address = "local";
-		while(!correctInput) {
-			System.out.println("Would you like to connect to custom host? Or connect to local host for the scheduler? (custom/local)");
+		while (!correctInput) {
+			System.out.println(
+					"Would you like to connect to custom host? Or connect to local host for the scheduler? (custom/local)");
 			Scanner in = new Scanner(System.in);
-			String input = in. nextLine();
-			if(input.toLowerCase().equals("local")) {
+			String input = in.nextLine();
+			if (input.toLowerCase().equals("local")) {
 				correctInput = true;
-			}
-			else if (input.toLowerCase().equals("custom")) {
+			} else if (input.toLowerCase().equals("custom")) {
 				System.out.println("Please enter the IP address of the Scheduler Host Machine:");
 				in = new Scanner(System.in);
-				input = in. nextLine();
+				input = in.nextLine();
 				address = input;
 				correctInput = true;
-			}
-			else {
+			} else {
 				System.out.println("Please enter a valid input. (custom/local)");
 			}
-			}
+		}
 		Scheduler s = new Scheduler(address);
 		while (true) {
 			s.receivePacket();

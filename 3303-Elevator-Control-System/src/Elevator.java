@@ -1,8 +1,3 @@
-/*
- * Elevator class deal with all conditions that elevator may meet.
- * It controls the actions of elevator.
- */
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -14,15 +9,23 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Elevator class that handles passenger events and maintains a correct elevator
+ * state. Controls the actions of the elevator.
+ * 
+ * @author Eric Vincent
+ * @documentation Jake Cassady, Cameron Davis
+ */
 public class Elevator implements Runnable {
 	private DatagramSocket receiveSocket;
 	private DatagramPacket receivePacket;
 	private int portNumber;
-	private int motor;// -1:down 1:up 0:stop
-	private int button;// the floor number chosen by passenger
-	private int floorSensor;// the floor number where elevator is
-	private Set<Integer> elevatorLamps;// the floor numbers that elevator need to stop by
+	private int motor; // -1:down, 1:up, 0:stop
+	private int button; // the floor number chosen by passenger
+	private int floorSensor; // the floor number where elevator is
+	private Set<Integer> elevatorLamps; // the floor numbers that elevator need to stop by
 	private StateE state;
+
 	public Elevator(int po) {
 		try {
 			portNumber = po;
@@ -40,11 +43,11 @@ public class Elevator implements Runnable {
 		elevatorLamps = new HashSet<Integer>();
 	}
 
-	/*
-	 * @override the run function is overridden such that the elevators
-	 * can run concurrently and implements what developer want elevators
-	 * to do.
+	/**
+	 * the run function is overridden such that the elevators can run concurrently
+	 * and implements what developer want elevators to do.
 	 */
+	@Override
 	public void run() {
 
 		while (true) {
@@ -64,16 +67,17 @@ public class Elevator implements Runnable {
 				}
 			}
 			arrayList = stringToList(msg);
-			this.pickUpPassager(arrayList);
-			this.deliveryPassager(arrayList);
+			this.pickUpPassenger(arrayList);
+			this.deliverPassenger(arrayList);
 			DatagramSocket newSocket;
 			try {
 				newSocket = new DatagramSocket();
 				DatagramPacket sendPacket = null;
 				String s = "Done";
 				byte[] result = s.getBytes();
-				sendMsg(result, result.length, receivePacket.getAddress(), sendPacket, newSocket, receivePacket.getPort());
-				this.log("PortNumber: "+receivePacket.getPort());
+				sendMsg(result, result.length, receivePacket.getAddress(), sendPacket, newSocket,
+						receivePacket.getPort());
+				this.log("PortNumber: " + receivePacket.getPort());
 				newSocket.close();
 			} catch (SocketException e) {
 				e.printStackTrace();
@@ -83,23 +87,20 @@ public class Elevator implements Runnable {
 		}
 
 	}
-	
-	/*
-	 * decides the state of a elevator when the passengers 
-	 * press the button.
-	 * @param arr :a list of actions that passengers made
+
+	/**
+	 * Alters the state of the elevator when passengers press a button
+	 * 
+	 * @param arr a list of actions that passengers made
 	 */
-	public void pickUpPassager(ArrayList<String> arr) {
-		if(arr.get(0).equals("Stop")) {
+	public void pickUpPassenger(ArrayList<String> arr) {
+		if (arr.get(0).equals("Stop")) {
 			motor = 0;
-		}
-		else if(arr.get(0).equals("Up")) {
+		} else if (arr.get(0).equals("Up")) {
 			motor = 1;
-		}
-		else if(arr.get(0).equals("Down")) {
+		} else if (arr.get(0).equals("Down")) {
 			motor = -1;
-		}
-		else {
+		} else {
 			try {
 				throw new IllegalAccessException("Message is invalid");
 			} catch (IllegalAccessException e) {
@@ -107,34 +108,32 @@ public class Elevator implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		if(motor == 0) {
-			state  = new StopState(this);
-		}
-		else {
+		if (motor == 0) {
+			state = new StopState(this);
+		} else {
 			button = Integer.parseInt(arr.get(1));
 			state = new MoveState(this);
-			
+
 		}
 		state.moveDoor();
 		state.moveElevator();
 		state = new StopState(this);
 		state.moveDoor();
-		
+
 	}
-	
-	/*
-	 * decides the state of a elevator when the passengers 
-	 * enter the elevator.
-	 * @param arr :a list of actions that passengers made
+
+	/**
+	 * Alters the state of the elevator when the elevator is delivering the
+	 * passengers
+	 * 
+	 * @param arr a list of actions that passengers made
 	 */
-	public void deliveryPassager(ArrayList<String> arr) {
-		if(arr.get(2).equals("Up")) {
+	public void deliverPassenger(ArrayList<String> arr) {
+		if (arr.get(2).equals("Up")) {
 			motor = 1;
-		}
-		else if(arr.get(2).equals("Down")) {
+		} else if (arr.get(2).equals("Down")) {
 			motor = -1;
-		}
-		else {
+		} else {
 			try {
 				throw new IllegalAccessException("Message is invalid");
 			} catch (IllegalAccessException e) {
@@ -142,15 +141,14 @@ public class Elevator implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		if(motor == 0) {
+		if (motor == 0) {
 			try {
 				throw new IllegalAccessException("Message is invalid");
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		else {
+		} else {
 			button = Integer.parseInt(arr.get(3));
 			elevatorLamps.add(button);
 			state = new MoveState(this);
@@ -161,43 +159,51 @@ public class Elevator implements Runnable {
 		state.moveDoor();
 		elevatorLamps.remove(button);
 	}
-	
-	/*
-	 * return the button pressed
-	 * @return int :number in button which is pressed
+
+	/**
+	 * Returns the floor button number chosen by a passenger
+	 * 
+	 * @return the button number
 	 */
 	public int getButton() {
 		return button;
 	}
-	
-	/*
-	 * get the motor status 
-	 * @return motor status in integer
+
+	/**
+	 * Return the status of the elevator's motor (-1 = down, 0 = stopped, 1 = going
+	 * up)
+	 * 
+	 * @return the status of the motor
 	 */
 	public int getMotor() {
 		return motor;
 	}
-	
-	/*
-	 * active and set the floor sensor
-	 * @param f :a floor sensor object
+
+	/**
+	 * Set the value of the floor sensor which indicates what floor the elevator is
+	 * currently at
+	 * 
+	 * @param f the floor number
 	 */
 	public void setFloorSensor(int f) {
 		floorSensor = f;
 	}
-	
-	/*
-	 * get the status of floor sensor
-	 * @return floor sensor status in integer
+
+	/**
+	 * Return the floor number where the elevator currently is
+	 * 
+	 * @return floor number of the elevator
 	 */
 	public int getFloorSensor() {
 		return floorSensor;
 	}
 
-	/*
-	 * convert a message string to arraylist
-	 * @param msg :a msg string 
-	 * @return a arraylist which contains strings
+	/**
+	 * Convert a String to an ArrayList. Splits given String at comma's into
+	 * elements of the ArrayList.
+	 * 
+	 * @param msg the String to convert
+	 * @return ArrayList of the String
 	 */
 	public ArrayList<String> stringToList(String msg) {
 		ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(msg.split(",")));
@@ -205,11 +211,12 @@ public class Elevator implements Runnable {
 		return arrayList;
 	}
 
-	/*
-	 * create a new byte list in limited length
-	 * @param len :the limitation of length 
-	 * @param arr :a list of byte
-	 * @return a list of byte
+	/**
+	 * Create and return a new byte list of a given limited length
+	 * 
+	 * @param len the desired length
+	 * @param arr byte list
+	 * @return the new length corrected byte list
 	 */
 	public byte[] fixByteArrLength(int len, byte[] arr) {
 		byte newdata[] = new byte[len];
@@ -218,10 +225,11 @@ public class Elevator implements Runnable {
 
 	}
 
-	/*
-	 * a boolean function for validating message 
-	 * @param a list of byte
-	 * @return boolean variable true
+	/**
+	 * Validates a given elevator directions message
+	 * 
+	 * @param msg the directions message
+	 * @return true if valid, false otherwise
 	 */
 	public boolean validMsg(String msg) {
 		ArrayList<String> validDirections = new ArrayList<>();
@@ -229,27 +237,29 @@ public class Elevator implements Runnable {
 		validDirections.add("Down");
 		validDirections.add("Stop");
 		String[] message = msg.split(",");
-		if(!validDirections.contains(message[0]) || !validDirections.contains(message[2])) {
+		if (!validDirections.contains(message[0]) || !validDirections.contains(message[2])) {
 			return false;
 		}
 		try {
 			int value = Integer.parseInt(message[1]);
 			value = Integer.parseInt(message[3]);
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 		return true;
 	}
 
-	/*
-	 * send the massage 
-	 * @param data :a list of byte
-	 * @param len :the length of data
-	 * @param address :the destination inet address
-	 * @param sendPacket :the datagram Packet which is going to be send 
-	 * @param sendReceiveSocket :the socket which is used to send and receive message
-	 * @param port :the destination port 	 
+	/**
+	 * Sends a DatagramPacket provided its byte data, length, destination
+	 * InetAddress & port through a given DatagramSocket
+	 * 
+	 * @param data              the packet's byte data
+	 * @param len               the length of the data
+	 * @param address           the destination InetAddress
+	 * @param sendPacket        an uninitialized sendPacket to be sent
+	 * @param sendReceiveSocket the socket used to send the packet
+	 * @param port              the destination port
+	 * @throws IOException
 	 */
 	public void sendMsg(byte[] data, int len, InetAddress address, DatagramPacket sendPacket,
 			DatagramSocket sendReceiveSocket, int port) throws IOException {
@@ -268,10 +278,11 @@ public class Elevator implements Runnable {
 
 	}
 
-	/*
-	 * receive the message 
-	 * @param receiveSocket :the socket which is used to receive message
-	 * @return a list of bytes
+	/**
+	 * Waits to receive a DatagramPacket on a given DatagramSocket
+	 * 
+	 * @param receiveSocket the socket
+	 * @return the byte data of the received packet
 	 */
 	public byte[] receiveMsg(DatagramSocket receiveSocket) {
 		byte data[] = new byte[20];
@@ -296,22 +307,22 @@ public class Elevator implements Runnable {
 		return data;
 	}
 
-	/*
-	 * print the bytes in a byte list 
-	 * @param arr :a list of byte
+	/**
+	 * Print a given byte array
+	 * 
+	 * @param arr the byte array
 	 */
 	public static void printByteArr(byte[] arr) {
-		for (int i = 0; i < arr.length; i++) {
+		for (int i = 0; i < arr.length; i++)
 			System.out.print(arr[i]);
-		}
 		System.out.print("\n");
 	}
 
 	public void log(String msg) {
 		System.out.println("Log: " + msg);
 	}
-	
-	//Used for testing
+
+	// Used for testing
 	public String getState() {
 		return state.stateName;
 	}

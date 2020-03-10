@@ -1,8 +1,11 @@
-/*
- * floorSubsystem class is a simulation of real-world floorSubsytem
- * which receives passenger's instruct and send it to scheduler.
- */
 
+/**
+ * FloorSubsystem class is a simulation of real-world elevator floor subsystem
+ * which receives passenger's instructions and sends it to the scheduler.
+ * 
+ * @author Andrew Foster
+ * @documentation Cameron Davis
+ */
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -21,11 +24,9 @@ public class FloorSubsystem {
 	FloorLamp lamp;
 	int currentFloor, targetFloor;
 	String time, direction;
-	boolean testFlag, testFlag2;
 
-	/*
-	 * constructor of floor subsystem
-	 */
+	boolean testFlag, testFlag2; // for testing purposes
+
 	public FloorSubsystem(String address) {
 		testFlag = false;
 		testFlag2 = false;
@@ -35,14 +36,12 @@ public class FloorSubsystem {
 
 		try {
 			Socket = new DatagramSocket();
-			if(address.contentEquals("local")) {
+			if (address.contentEquals("local")) {
 				targetAddress = InetAddress.getLocalHost();
-			}
-			else {
+			} else {
 				try {
 					targetAddress = InetAddress.getByName(address);
 				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -50,79 +49,81 @@ public class FloorSubsystem {
 			e.printStackTrace();
 			System.exit(1);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	/*
-	 * set the current time
+	/**
+	 * Set the current time
 	 * 
-	 * @param a :current time in string form
+	 * @param time
 	 */
-	public void setTime(String a) {
-		time = a;
+	public void setTime(String time) {
+		this.time = time;
 	}
 
-	/*
-	 * set the target floor which passenger want to reach
+	/**
+	 * Set the passengers destination floor
 	 * 
-	 * @param floor :target floor in integer form
+	 * @param floor the destination floor
 	 */
 	public void setTargetFloor(int floor) {
 		targetFloor = floor;
 	}
 
-	/*
-	 * set the current floor which passenger is at
+	/**
+	 * Set the floor the passenger is currently at
 	 * 
-	 * @param floor :current floor in integer form
+	 * @param floor
 	 */
 	public void setFloor(int floor) {
 		currentFloor = floor;
 	}
 
-	/*
-	 * set the direction which passenger want to go
+	/**
+	 * Set the direction the passenger wants to go
 	 * 
-	 * @param direction :direction in string form
+	 * @param direction
 	 */
 	public void setDirection(String direction) {
 		this.direction = direction;
 	}
 
-	/*
-	 * get the current floor information
+	/**
+	 * Return the current floor of the passenger
 	 * 
-	 * @return current floor
+	 * @return currentFloor
 	 */
 	public int getCurrentFloor() {
 		return currentFloor;
 	}
 
-	/*
-	 * return target floor
+	/**
+	 * Return passenger destination floor
+	 * 
+	 * @return targetFloor
 	 */
 	public int getTargetFloor() {
 		return targetFloor;
 	}
 
-	/*
-	 * return direction
+	/**
+	 * Return passenger's desired direction
+	 * 
+	 * @return direction
 	 */
 	public String getDirection() {
 		return direction;
 	}
 
-	/*
-	 * return time
-	 */
 	public String getTime() {
 		return time;
 	}
 
-	/*
-	 * send message and receive message
+	/**
+	 * Send a DatagramPacket to port 3000 containing information of the operations
+	 * of a passenger such as their current floor, the direction they want to go,
+	 * and the destination floor. Then, wait for an echo packet.
 	 */
 	public void sendAndReceive() {
 
@@ -143,7 +144,7 @@ public class FloorSubsystem {
 			System.exit(1);
 		}
 
-		System.out.println("Message send");
+		System.out.println("Message sent.");
 
 		byte[] data = new byte[100];
 		receivePacket = new DatagramPacket(data, data.length);
@@ -164,37 +165,36 @@ public class FloorSubsystem {
 		System.out.println("From " + receivePacket.getAddress() + ", post: " + receivePacket.getPort());
 		System.out.println("Contains: " + new String(receivePacket.getData()));
 
-		// Socket.close();
+		//Socket.close();
 	}
 
 	public static void main(String[] args) {
-		boolean correctInput = false;		
+		boolean correctInput = false;
 		String address = "local";
 		ArrayList<String> list = new ArrayList<>();
 		readFile reader = new readFile();
 		list = reader.toArrayByFileRead("ElevatorCSV.txt");
 		int acurrent, atarget;
 		String time, direction;
-		while(!correctInput) {
-		System.out.println("Would you like to connect to custom host? Or connect to local host for the scheduler? (custom/local)");
-		Scanner in = new Scanner(System.in);
-		String input = in. nextLine();
-		if(input.toLowerCase().equals("local")) {
-			correctInput = true;
-		}
-		else if (input.toLowerCase().equals("custom")) {
-			System.out.println("Please enter the IP address of the Scheduler Host Machine:");
-			in = new Scanner(System.in);
-			input = in. nextLine();
-			address = input;
-			correctInput = true;
-		}
-		else {
-			System.out.println("Please enter a valid input. (custom/local)");
-		}
+		while (!correctInput) {
+			System.out.println(
+					"Would you like to connect to custom host? Or connect to local host for the scheduler? (custom/local)");
+			Scanner in = new Scanner(System.in);
+			String input = in.nextLine();
+			if (input.toLowerCase().equals("local")) {
+				correctInput = true;
+			} else if (input.toLowerCase().equals("custom")) {
+				System.out.println("Please enter the IP address of the Scheduler Host Machine:");
+				in = new Scanner(System.in);
+				input = in.nextLine();
+				address = input;
+				correctInput = true;
+			} else {
+				System.out.println("Please enter a valid input. (custom/local)");
+			}
 		}
 		FloorSubsystem aclient = new FloorSubsystem(address);
-
+ 
 		for (int i = 0; i < list.size(); i++) {
 			String[] newList = list.get(i).split("\t");
 			try {
